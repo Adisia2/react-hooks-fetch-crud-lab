@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 function QuestionForm(props) {
   const [formData, setFormData] = useState({
@@ -9,31 +9,9 @@ function QuestionForm(props) {
     answer4: "",
     correctIndex: 0,
   });
-   
-  useEffect(() => {
-    fetch("http://localhost:4000/questions")
-      .then((r) => r.json())
-      .then((questions) => setFormData(questions[0]));
-  }, []);
-
-
-  function handleDelete(id){
-    fetch(`http://localhost:4000/questions/${id}`, {
-      method: "DELETE",
-    })
-    .then((r) => r.json())
-    .then(() => {
-      const updatedQuestions = questions.filter((question) => question.id !== id);
-      setQuestions(updatedQuestions);
-    });
-  }
-  
-  function updatedQuestions(id, updatedQuestion){
-    const updatedQuestions = questions.map((question) => {
-      if (question.id === id) {
-
-
-
+  //POST /questions
+  // {
+    
 
   function handleChange(event) {
     setFormData({
@@ -44,7 +22,18 @@ function QuestionForm(props) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(formData);
+   const { prompt, answer1, answer2, answer3, answer4, correctIndex } = formData;
+    fetch("http://localhost:4000/questions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        prompt,
+        answers: [answer1, answer2, answer3, answer4],
+        correctIndex,
+      }), 
+    })
   }
 
   return (
