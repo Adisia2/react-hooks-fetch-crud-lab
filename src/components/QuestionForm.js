@@ -16,7 +16,22 @@ function QuestionForm(props) {
       .then((questions) => setFormData(questions[0]));
   }, []);
 
+
+  function handleDelete(id){
+    fetch(`http://localhost:4000/questions/${id}`, {
+      method: "DELETE",
+    })
+    .then((r) => r.json())
+    .then(() => {
+      const updatedQuestions = questions.filter((question) => question.id !== id);
+      setQuestions(updatedQuestions);
+    });
+  }
   
+  function updatedQuestions(id, updatedQuestion){
+    const updatedQuestions = questions.map((question) => {
+      if (question.id === id) {
+
 
 
 
